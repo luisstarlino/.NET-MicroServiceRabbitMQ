@@ -2,6 +2,9 @@
 using MicroRabbit.Domain.Core.Bus;
 using MicroRabbit.Domain.Core.Commands;
 using MicroRabbit.Domain.Core.Events;
+using Newtonsoft.Json;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,13 +16,13 @@ namespace MicroRabbit.Infra.Bus
     public sealed class RabbitMQBus : IEventBus
     {
         private readonly IMediator _mediator;
-        private readonly Dictionary<string, List<Type>> _handles;
+        private readonly Dictionary<string, List<Type>> _handlers;
         private readonly List<Type> _eventTypes;
 
         public RabbitMQBus(IMediator mediator)
         {
             _mediator = mediator;
-            _handles = new Dictionary<string, List<Type>>();
+            _handlers = new Dictionary<string, List<Type>>();
             _eventTypes = new List<Type>();
         }
 
@@ -28,16 +31,114 @@ namespace MicroRabbit.Infra.Bus
             return _mediator.Send(command);
         }
 
-        public void Publish<T>(T @event) where T : Event
+        public async Task PublishAsync<T>(T @event) where T : Event
         {
-            throw new NotImplementedException();
+            //------------------------------------------------------------------------------------------------
+            // Config
+            //------------------------------------------------------------------------------------------------
+            var eventName = @event.GetType().Name;
+            var factory = new ConnectionFactory { HostName = "localhost" };
+            using var connection = await factory.CreateConnectionAsync();
+            using var channel = await connection.CreateChannelAsync();
+            await channel.QueueDeclareAsync(eventName, false, false, false, null);
+
+            //------------------------------------------------------------------------------------------------
+            // Set message
+            //------------------------------------------------------------------------------------------------
+            var message = JsonConvert.SerializeObject(@event);
+            var body = Encoding.UTF8.GetBytes(message);
+
+            //------------------------------------------------------------------------------------------------
+            // Set Publish
+            //------------------------------------------------------------------------------------------------
+            await channel.BasicPublishAsync("", eventName, body);
+
         }
 
-        public void Subscribe<T, TH>()
+        public async Task Subscribe<T, TH>()
             where T : Event
             where TH : IEventHandler<T>
         {
-            throw new NotImplementedException();
+            //------------------------------------------------------------------------------------------------
+            // Config
+            //------------------------------------------------------------------------------------------------
+            var eventName = typeof(T).Name;
+            var handlerType = typeof(TH);
+
+            if (!_eventTypes.Contains(typeof(T))){
+                _eventTypes.Add(typeof(T));
+            }
+
+            if (!_handlers.ContainsKey(eventName))
+            {
+                _handlers.Add(eventName, new List<Type>());
+            }
+
+            if (_handlers[eventName].Any(t => t.GetType() == handlerType))
+            {
+                throw new ArgumentException($"Handler Type {handlerType.Name} already is registered for '{eventName}'", nameof(handlerType));
+            }
+
+            _handlers[eventName].Add(handlerType);
+
+            await StartBasicConsumeAsync<T>();
+            
+        }
+
+        private async Task StartBasicConsumeAsync<T>() where T : Event
+        {
+
+            //------------------------------------------------------------------------------------------------
+            // Creating a connection async
+            //------------------------------------------------------------------------------------------------
+            var factory = new ConnectionFactory 
+            { 
+                HostName = "localhost",
+                ConsumerDispatchConcurrency = 1
+            };
+            var connection = await factory.CreateConnectionAsync();
+            var channel = await connection.CreateChannelAsync();
+
+            //------------------------------------------------------------------------------------------------
+            // Queue Declare
+            //------------------------------------------------------------------------------------------------
+            var eventName = typeof(T).Name;
+            await channel.QueueDeclareAsync(eventName, false, false, false, null);
+
+            //------------------------------------------------------------------------------------------------
+            // Create async consumer
+            //------------------------------------------------------------------------------------------------
+            var consumer = new AsyncEventingBasicConsumer(channel);
+            consumer.ReceivedAsync += Consumer_Received;
+
+            //------------------------------------------------------------------------------------------------
+            // Start consume
+            //------------------------------------------------------------------------------------------------
+            await channel.BasicConsumeAsync(eventName, true, consumer);
+
+        }
+
+        private async Task Consumer_Received(object sender, BasicDeliverEventArgs e)
+        {
+            var eventName = e.RoutingKey;
+            var message = Encoding.UTF8.GetString(e.Body.ToArray());
+
+            try
+            {
+                await ProcessEvent(eventName, message).ConfigureAwait(false);
+            }
+            catch (Exception ex) 
+            {
+
+            }
+        }
+
+        private async Task ProcessEvent(string eventName, string message)
+        {
+            if(_handlers.ContainsKey(eventName))
+            {
+                var 
+            }
         }
     }
 }
