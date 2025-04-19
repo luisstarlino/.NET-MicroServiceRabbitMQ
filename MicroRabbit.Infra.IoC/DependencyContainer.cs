@@ -36,7 +36,7 @@ namespace MicroRabbit.Infra.IoC
             services.AddTransient<IAccountRepository, AccountRepository>();
 
             // --- DbContext (EF Core)
-            services.AddDbContext<BankingDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("BankingDbConnection")));
+            //services.AddDbContext<BankingDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("BankingDbConnection")));
 
             //services.AddMediatR(typeof(Startup));
         }
