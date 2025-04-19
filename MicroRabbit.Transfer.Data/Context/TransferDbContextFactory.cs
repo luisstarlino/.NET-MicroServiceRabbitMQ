@@ -10,7 +10,7 @@ namespace MicroRabbit.Transfer.Data.Context
         {
             var optionsBuilder = new DbContextOptionsBuilder<TransferDbContext>();
 
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=bakingdb;Username=admin;Password=admin123");
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=transferdb;Username=admin;Password=admin123");
 
             return new TransferDbContext(optionsBuilder.Options);
         }
