@@ -10,13 +10,15 @@ using MicroRabbit.Banking.Data.Repository;
 using MicroRabbit.Banking.Domain.Interfaces;
 using MicroRabbit.Domain.Core.Bus;
 using MicroRabbit.Infra.Bus;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MicroRabbit.Infra.IoC
 {
     public class DependencyContainer
     {
-        public static void RegisterServices(IServiceCollection services)
+        public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
         {
             // --- Domain Bus
             services.AddTransient<IEventBus, RabbitMQBus>();
@@ -26,7 +28,11 @@ namespace MicroRabbit.Infra.IoC
 
             // --- Data Layer
             services.AddTransient<IAccountRepository, AccountRepository>();
-            services.AddTransient<BankingDbContext>();
+
+            // --- DbContext (EF Core)
+            services.AddDbContext<BankingDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("BankingDbConnection")));
+
+            //services.AddMediatR(typeof(Startup));
         }
     }
 }
