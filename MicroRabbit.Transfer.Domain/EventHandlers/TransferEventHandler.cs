@@ -20,7 +20,7 @@ namespace MicroRabbit.Transfer.Domain.EventHandlers
         public Task Handle(TransferCreatedEvent @event)
         {
 
-            var saveLog = _transferRepository.Add(new TransferLog
+            bool saveLog = _transferRepository.Add(new TransferLog
             {
                 FromAccount = @event.From,
                 ToAccount = @event.To,
