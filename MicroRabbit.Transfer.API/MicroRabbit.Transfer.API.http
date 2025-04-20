@@ -1,0 +1,6 @@
+@MicroRabbit.Transfer.API_HostAddress = http://localhost:5198
+
+GET {{MicroRabbit.Transfer.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

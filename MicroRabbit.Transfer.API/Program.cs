@@ -1,4 +1,4 @@
-using MicroRabbit.Banking.Api;
+using MicroRabbit.Transfer.API;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,3 +10,5 @@ var app = builder.Build();
 startup.Configure(app, app.Environment);
 
 app.Run();
+
+
