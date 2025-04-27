@@ -12,6 +12,5 @@ namespace MicroRabbit.Banking.Application.Interfaces
     {
         IEnumerable<Account> GetAccounts();
         bool Transfer(AccountTransfer accountTransfer);
-        bool<Account> InsertAccount(Account account);
     }
 }
