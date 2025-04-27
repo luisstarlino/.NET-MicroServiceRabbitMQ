@@ -31,5 +31,10 @@ namespace MicroRabbit.Banking.Data.Repository
             }
             
         }
+
+        public IEnumerable<Client> GetAllClients()
+        {
+            return _ctx.Clients;
+        }
     }
 }

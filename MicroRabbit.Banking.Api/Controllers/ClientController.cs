@@ -17,6 +17,11 @@ namespace MicroRabbit.Banking.Api.Controllers
             _clientService = clientService;
         }
 
+        /// <summary>
+        /// ADD NEW CLIENT
+        /// </summary>
+        /// <param name="clientReq"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult AddClient([FromBody] ClientRequest clientReq)
         {
@@ -45,6 +50,13 @@ namespace MicroRabbit.Banking.Api.Controllers
             {
                 return BadRequest("ERR01-Error trying to create a new account into the Bank");
             }
+        }
+
+        [HttpGet]
+        [Route("list-all")]
+        public IEnumerable<ClientRequest> ListAllClients()
+        {
+            return _clientService.GetClients();
         }
     }
 }

@@ -55,5 +55,37 @@ namespace MicroRabbit.Banking.Application.Services
                 return true;
             }
         }
+
+        public IEnumerable<ClientRequest> GetClients()
+        {
+            try
+            {
+                //------------------------------------------------------------------------------------------------
+                // GET DATA FROM DB
+                //------------------------------------------------------------------------------------------------
+                var clientsDB = _clientRepository.GetAllClients();
+
+                //------------------------------------------------------------------------------------------------
+                // MAPPING TO VIEW
+                //------------------------------------------------------------------------------------------------
+                var clients = clientsDB.Select(c => 
+                    new ClientRequest()
+                    {
+                        FirstName = c.FirstName,
+                        LastName = c.LastName,
+                        Mail = c.Mail,
+                        Phone = c.Phone
+                    }
+                );
+
+                return clients;
+
+            }
+            catch
+            {
+                return new List<ClientRequest>();
+            }
+            
+        }
     }
 }
