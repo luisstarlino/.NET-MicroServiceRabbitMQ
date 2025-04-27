@@ -36,5 +36,10 @@ namespace MicroRabbit.Banking.Data.Repository
         {
             return _ctx.Clients;
         }
+
+        public Client? GetById(int clientId)
+        {
+            return _ctx.Clients.Find(clientId);
+        }
     }
 }

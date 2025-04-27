@@ -10,6 +10,7 @@ namespace MicroRabbit.Banking.Domain.Interfaces
     public interface IClientRepository
     {
         IEnumerable<Client> GetAllClients();
+        Client? GetById(int clientId);
         bool Add(Client client);
     }
 }

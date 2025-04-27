@@ -52,11 +52,43 @@ namespace MicroRabbit.Banking.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// List all Clients
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("list-all")]
         public IEnumerable<ClientRequest> ListAllClients()
         {
             return _clientService.GetClients();
+        }
+
+        [HttpGet]
+        [Route("{clientId}")]
+        public IActionResult GetClientById(string clientId)
+        {
+            try
+            {
+                //------------------------------------------------------------------------------------------------
+                // CHECK PARMS
+                //------------------------------------------------------------------------------------------------
+                var clientNumber = Int32.Parse(clientId);
+
+                //------------------------------------------------------------------------------------------------
+                // GET CLIENT
+                //------------------------------------------------------------------------------------------------
+                var client = _clientService.GetUniqueClient(clientNumber);
+                if (client == null) return NoContent();
+                else // --- FOUND!
+                {
+                    return Ok(client);
+                }
+                    
+            }
+            catch
+            {
+                return BadRequest("ERR01 - Internal server error!");
+            }
         }
     }
 }

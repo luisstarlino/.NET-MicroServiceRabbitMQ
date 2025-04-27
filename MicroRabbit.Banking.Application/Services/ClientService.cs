@@ -87,5 +87,36 @@ namespace MicroRabbit.Banking.Application.Services
             }
             
         }
+
+        public ClientRequest? GetUniqueClient(int clientId)
+        {
+            try
+            {
+                //------------------------------------------------------------------------------------------------
+                // GET DATA FROM DB
+                //------------------------------------------------------------------------------------------------
+                var clientDB = _clientRepository.GetById(clientId);
+                if (clientDB == null) return null;
+
+
+                //------------------------------------------------------------------------------------------------
+                // MAPPING TO VIEW
+                //------------------------------------------------------------------------------------------------
+                var client = new ClientRequest()
+                {
+                    FirstName = clientDB.FirstName,
+                    LastName = clientDB.LastName,
+                    Mail = clientDB.Mail,
+                    Phone = clientDB.Phone
+                };
+                
+
+                return client;
+
+            } catch
+            {
+                return null;
+            }
+        }
     }
 }
