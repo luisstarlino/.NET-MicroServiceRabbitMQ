@@ -56,6 +56,8 @@ namespace MicroRabbit.Banking.Application.Services
             }
         }
 
+        
+
         public IEnumerable<ClientRequest> GetClients()
         {
             try
@@ -114,6 +116,33 @@ namespace MicroRabbit.Banking.Application.Services
                 return client;
 
             } catch
+            {
+                return null;
+            }
+        }
+
+        public ClientRequest? CheckApprovalStatus(int clientId)
+        {
+            try
+            {
+                //------------------------------------------------------------------------------------------------
+                // GET DATA FROM DB
+                //------------------------------------------------------------------------------------------------
+                var clientDB = _clientRepository.GetById(clientId);
+                if (clientDB == null) return null;
+
+                //------------------------------------------------------------------------------------------------
+                // MAPPING STATAUS TO VIEW
+                //------------------------------------------------------------------------------------------------
+                var client = new ClientRequest()
+                {
+                    IsActive = clientDB.IsActive,
+                    Mail = clientDB.Mail
+                };
+                return client;
+
+            }
+            catch
             {
                 return null;
             }

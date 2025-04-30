@@ -64,15 +64,15 @@ namespace MicroRabbit.Banking.Api.Controllers
         }
 
         [HttpGet]
-        [Route("{clientId}")]
-        public IActionResult GetClientById(string clientId)
+        [Route("{id}")]
+        public IActionResult GetClientById(string id)
         {
             try
             {
                 //------------------------------------------------------------------------------------------------
                 // CHECK PARMS
                 //------------------------------------------------------------------------------------------------
-                var clientNumber = Int32.Parse(clientId);
+                var clientNumber = Int32.Parse(id);
 
                 //------------------------------------------------------------------------------------------------
                 // GET CLIENT
@@ -86,6 +86,33 @@ namespace MicroRabbit.Banking.Api.Controllers
                     
             }
             catch
+            {
+                return BadRequest("ERR01 - Internal server error!");
+            }
+        }
+
+        [Route("{id}/approval-status")]
+        [HttpPost]
+        public IActionResult CheckApprovalStatus(string id)
+        {
+            try
+            {
+                //------------------------------------------------------------------------------------------------
+                // CHECK PARMS
+                //------------------------------------------------------------------------------------------------
+                var clientNumber = Int32.Parse(id);
+
+                //------------------------------------------------------------------------------------------------
+                // GET CLIENT
+                //------------------------------------------------------------------------------------------------
+                var clientApprovalStatus = _clientService.CheckApprovalStatus(clientNumber);
+                if (clientApprovalStatus == null) return NoContent();
+                else // --- FOUND!
+                {
+                    return Ok(clientApprovalStatus);
+                }
+
+            } catch
             {
                 return BadRequest("ERR01 - Internal server error!");
             }

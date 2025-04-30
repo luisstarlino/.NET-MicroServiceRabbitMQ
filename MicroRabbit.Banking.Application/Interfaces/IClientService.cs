@@ -13,5 +13,6 @@ namespace MicroRabbit.Banking.Application.Interfaces
         bool AddClient(ClientRequest client);
         IEnumerable<ClientRequest> GetClients();
         ClientRequest? GetUniqueClient(int clientId);
+        ClientRequest? CheckApprovalStatus(int clientId);
     }
 }
