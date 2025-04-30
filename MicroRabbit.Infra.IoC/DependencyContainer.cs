@@ -47,16 +47,25 @@ namespace MicroRabbit.Infra.IoC
             // --- Domain Banking Commands
             services.AddTransient<IRequestHandler<CreateTransferCommand, bool>, TransferCommandHandler>();
 
-            // --- Application Services
+            #region APPLICATION SERVICES
+            // --- (Banking)
             services.AddTransient<IAccountService, AccountService>();
-            services.AddTransient<ITransferService, TransferService>();
+            services.AddTransient<IClientService, ClientService>();
 
-            // --- Data Layer
+            // --- (Transfer)
+            services.AddTransient<ITransferService, TransferService>();
+            #endregion
+
+            #region DATA LAYER
+            // --- (Banking)
             services.AddTransient<IAccountRepository, AccountRepository>();
+            services.AddTransient<IClientRepository, ClientRepository>();
             services.AddTransient<BankingDbContext>();
 
+            // --- (Transfer)
             services.AddTransient<ITransferRepository, TransferRepository>();
             services.AddTransient<TransferDbContext>();
+            #endregion
 
         }
     }
