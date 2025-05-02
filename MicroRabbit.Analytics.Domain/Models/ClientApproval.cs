@@ -9,7 +9,7 @@ namespace MicroRabbit.Analytics.Domain.Models
     public class ClientApproval
     {
         public int Id { get; set; }
-        public int AccountId { get; set; }
+        public int ClientId { get; set; }
         public bool ApprovalStatus { get; set; }
         public string Reason { get; set; }
         public DateTime CreatedDate { get; set; }

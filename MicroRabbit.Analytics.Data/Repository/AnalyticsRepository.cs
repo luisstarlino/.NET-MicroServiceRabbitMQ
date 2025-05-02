@@ -29,5 +29,10 @@ namespace MicroRabbit.Analytics.Data.Repository
         {
             return _ctx.ClientApprovals;
         }
+
+        public ClientApproval? GetUniqueByClient(int idClient)
+        {
+            return _ctx.ClientApprovals.Where(c => c.ClientId.Equals(idClient)).FirstOrDefault() ?? null;
+        }
     }
 }
