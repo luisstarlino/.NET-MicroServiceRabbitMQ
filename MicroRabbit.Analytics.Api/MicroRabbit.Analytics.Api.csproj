@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MicroRabbit.Analytics.Application\MicroRabbit.Analytics.Application.csproj" />
     <ProjectReference Include="..\MicroRabbit.Analytics.Domain\MicroRabbit.Analytics.Domain.csproj" />
   </ItemGroup>
 
