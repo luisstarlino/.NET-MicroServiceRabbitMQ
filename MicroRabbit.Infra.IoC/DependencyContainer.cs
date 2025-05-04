@@ -4,6 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MediatR;
+using MicroRabbit.Analytics.Data.Context;
+using MicroRabbit.Analytics.Data.Repository;
+using MicroRabbit.Analytics.Domain.EventHandlers;
+using MicroRabbit.Analytics.Domain.Events;
+using MicroRabbit.Analytics.Domain.Interfaces;
 using MicroRabbit.Banking.Application.Interfaces;
 using MicroRabbit.Banking.Application.Services;
 using MicroRabbit.Banking.Data.Context;
@@ -37,15 +42,29 @@ namespace MicroRabbit.Infra.IoC
                 return new RabbitMQBus(sp.GetService<IMediator>()!, scopeFactory);
             });
 
-            // --- Subscriptions
+            #region ADD SUBSCRIPTIONS TO QUEUE's (Subscriptions)
+            // --- (Transfer)
             services.AddTransient<TransferEventHandler>();
 
-            // --- Domain Events
+            // --- (Analytics)
+            services.AddTransient<ClientApprovalHandler>();
+            #endregion
+
+            #region PREPARE DE QUEUE TO RECEIVE THE EVENT (Domain Events)
+            // --- (Transfer)
             services.AddTransient<IEventHandler<TransferCreatedEvent>, TransferEventHandler>();
 
+            // --- (Analytics)
+            services.AddTransient<IEventHandler<ClientApprovalEvent>, ClientApprovalHandler>();
+            #endregion
 
-            // --- Domain Banking Commands
+            #region LINK HANDLES + COMMANDS (TO SEND A REQUEST TO A QUEUE | Domain Banking Commands)
+            // --- (Transfer)
             services.AddTransient<IRequestHandler<CreateTransferCommand, bool>, TransferCommandHandler>();
+
+            // --- (Analytics)
+            services.AddTransient<IRequestHandler<CreateClientApprovalCommand, bool>, ClientApprovalCommandHandler>();
+            #endregion
 
             #region APPLICATION SERVICES
             // --- (Banking)
@@ -56,7 +75,7 @@ namespace MicroRabbit.Infra.IoC
             services.AddTransient<ITransferService, TransferService>();
             #endregion
 
-            #region DATA LAYER
+            #region DATA LAYER (LINK CONTEXT's)
             // --- (Banking)
             services.AddTransient<IAccountRepository, AccountRepository>();
             services.AddTransient<IClientRepository, ClientRepository>();
@@ -65,6 +84,10 @@ namespace MicroRabbit.Infra.IoC
             // --- (Transfer)
             services.AddTransient<ITransferRepository, TransferRepository>();
             services.AddTransient<TransferDbContext>();
+
+            // --- (Analytics)
+            services.AddTransient<IAnalyticsRepository, AnalyticsRepository>();
+            services.AddTransient<AnalyticsDbContext>();
             #endregion
 
         }

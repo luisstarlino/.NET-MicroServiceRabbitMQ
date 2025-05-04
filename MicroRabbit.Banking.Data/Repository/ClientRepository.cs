@@ -18,16 +18,16 @@ namespace MicroRabbit.Banking.Data.Repository
             _ctx = ctx;
         }
 
-        public bool Add(Client client)
+        public int Add(Client client)
         {
             try
             {
                 _ctx.Clients.Add(client);
                 _ctx.SaveChanges();
-                return true;
+                return client.Id;
             } catch
             {
-                return false;
+                return -1;
             }
             
         }

@@ -1,8 +1,10 @@
 ﻿using MicroRabbit.Banking.Application.Interfaces;
 using MicroRabbit.Banking.Application.Models;
+using MicroRabbit.Banking.Domain.Commands;
 using MicroRabbit.Banking.Domain.ExtensionsMethods;
 using MicroRabbit.Banking.Domain.Interfaces;
 using MicroRabbit.Banking.Domain.Models;
+using MicroRabbit.Domain.Core.Bus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +16,12 @@ namespace MicroRabbit.Banking.Application.Services
     public class ClientService : IClientService
     {
         private readonly IClientRepository _clientRepository;
+        private readonly IEventBus _bus;
 
-        public ClientService(IClientRepository clientRepository)
+        public ClientService(IClientRepository clientRepository, IEventBus bus)
         {
             _clientRepository = clientRepository;
+            _bus = bus;
         }
 
         public bool AddClient(ClientRequest c)
@@ -44,14 +48,26 @@ namespace MicroRabbit.Banking.Application.Services
             //------------------------------------------------------------------------------------------------
             // SAVING THE REQUEST CREATE ACCOUNT
             //------------------------------------------------------------------------------------------------
-            var isProcessRequest = _clientRepository.Add(clientDB);
+            var idClientProcess = _clientRepository.Add(clientDB);
 
-            if (!isProcessRequest) return false; // --- Error in the repository
+            if (idClientProcess <= 0) return false; // --- Error in the repository
             else
             {
+
                 //------------------------------------------------------------------------------------------------
-                // SEND EVENTS TO THE CURRENT QUEUE
+                // SEND EVENTS TO THE CURRENT QUEUE | Create a command & send
                 //------------------------------------------------------------------------------------------------
+                ClientApprovalCommand command = new ClientApprovalCommand()
+                {
+                    Id = idClientProcess,
+                    FirstName = c.FirstName,
+                    LastName = c.LastName,
+                    Mail = c.Mail,
+                    Phone = c.Phone
+                };
+
+                _bus.SendCommand(command);
+
                 return true;
             }
         }
