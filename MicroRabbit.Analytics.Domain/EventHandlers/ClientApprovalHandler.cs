@@ -1,4 +1,5 @@
 ﻿using MicroRabbit.Analytics.Domain.Events;
+using MicroRabbit.Analytics.Domain.Helpers;
 using MicroRabbit.Analytics.Domain.Interfaces;
 using MicroRabbit.Domain.Core.Bus;
 using System;
@@ -29,27 +30,23 @@ namespace MicroRabbit.Analytics.Domain.EventHandlers
             bool isValid = false;
             var reason = String.Empty;
 
+            var validator = new ClientApprovalValidator();
+
             try
             {
                 //------------------------------------------------------------------------------------------------
-                // ROLE 1: Invalid mail (we don't accept mails coming from yahoo )
+                // Check roles
                 //------------------------------------------------------------------------------------------------
-                if (@event.Mail.Contains("yahoo", StringComparison.CurrentCultureIgnoreCase))
+                var validationResult = validator.Validate(@event);
+                if (!validationResult.IsValid)
                 {
-                    reason = $"Unfortunately, we don't accept emails registered with yahoo. {DEFAULT_COMPLEMENT}";
-                    
+                    reason = string.Join(" ", validationResult.Errors.Select(e => e.ErrorMessage)) + $" {DEFAULT_COMPLEMENT}";
                 }
-                //------------------------------------------------------------------------------------------------
-                // ROLE 2: Invalid phone (Patter DDI+DDD+PHONE | 5531999999999)
-                //------------------------------------------------------------------------------------------------
-                else if (Regex.IsMatch(@event.Phone, @"^55\d{10,11}$"))
+                else
                 {
-                    reason = $"Invalid phone number, please review the acceptance rules for this field. Unfortunately, we don't accept models like this. {DEFAULT_COMPLEMENT}";
-                } else
-                {
-                    // --- All good
                     isValid = true;
                 }
+                
 
                 //------------------------------------------------------------------------------------------------
                 // TODO: CHECK EMAIL IN DB | CHECK EMAIL + FULLNAME IN THE DB

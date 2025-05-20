@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MicroRabbit.Analytics.Api.Controllers
 {
     [ApiController]
+    [Route("[controller]")]
     public class ClientApprovalController : ControllerBase
     {
         private readonly IClientApprovalService _clientApprovalService; 
