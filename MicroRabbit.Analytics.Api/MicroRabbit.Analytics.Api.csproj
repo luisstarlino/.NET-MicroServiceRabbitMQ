@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MicroRabbit.Analytics.Application\MicroRabbit.Analytics.Application.csproj" />
+    <ProjectReference Include="..\MicroRabbit.Analytics.Data\MicroRabbit.Analytics.Data.csproj" />
+    <ProjectReference Include="..\MicroRabbit.Analytics.Domain\MicroRabbit.Analytics.Domain.csproj" />
+    <ProjectReference Include="..\MicroRabbit.Infra.IoC\MicroRabbit.Infra.IoC.csproj" />
+  </ItemGroup>
+
+</Project>

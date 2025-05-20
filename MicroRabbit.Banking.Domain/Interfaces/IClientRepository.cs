@@ -11,6 +11,6 @@ namespace MicroRabbit.Banking.Domain.Interfaces
     {
         IEnumerable<Client> GetAllClients();
         Client? GetById(int clientId);
-        bool Add(Client client);
+        int Add(Client client);
     }
 }
