@@ -14,6 +14,16 @@ namespace MicroRabbit.Banking.Data.Context
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Account>()
+                .HasOne(a => a.Client)
+                .WithMany(c => c.Accounts)
+                .HasForeignKey(a => a.ClientId)
+                .OnDelete(DeleteBehavior.Cascade); // ou Restrict, se não quiser excluir em cascata
+        }
+
+
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Client> Clients { get; set; }
     }

@@ -16,5 +16,9 @@ namespace MicroRabbit.Banking.Domain.Models
         public string Phone { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
+
+        // --- Foreing key configuration
+        public ICollection<Account> Accounts { get; set; } // Reverse Navigation (1:N) A client, using many accounts
+
     }
 }
