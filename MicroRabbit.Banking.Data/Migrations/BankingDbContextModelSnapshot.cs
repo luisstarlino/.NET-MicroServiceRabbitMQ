@@ -33,9 +33,11 @@ namespace MicroRabbit.Banking.Data.Migrations
                     b.Property<decimal>("AccountBalance")
                         .HasColumnType("numeric");
 
-                    b.Property<string>("AccountType")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("AccountType")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean");
 
                     b.Property<int>("ClientId")
                         .HasColumnType("integer");

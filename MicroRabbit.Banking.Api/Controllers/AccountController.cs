@@ -1,15 +1,25 @@
-﻿using MicroRabbit.Banking.Application.Models;
+﻿using MicroRabbit.Banking.Api.Controllers.Core;
+using MicroRabbit.Banking.Application.Interfaces;
+using MicroRabbit.Banking.Application.Models;
 using MicroRabbit.Banking.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace MicroRabbit.Banking.Api.Controllers
 {
     [ApiController]
     [Route("account")]
-    public class AccountController : ControllerBase
+    public class AccountController : BaseController
     {
+        private readonly IAccountService _accountService;
+
+        public AccountController(IAccountService accountService)
+        {
+            _accountService = accountService;
+        }
+
         [HttpPost]
-        public IActionResult AddAccount([FromBody] AccountRequest acRequest)
+        public async Task<IActionResult> AddAccount([FromBody] AccountRequest acRequest)
         {
             try
             {
@@ -29,17 +39,25 @@ namespace MicroRabbit.Banking.Api.Controllers
                 //------------------------------------------------------------------------------------------------
                 // CREATING ACCOUNT
                 //------------------------------------------------------------------------------------------------
-                var isAccountCreated = true;
+                var isAccountCreated = await _accountService.AddAccount(acRequest);
 
                 //------------------------------------------------------------------------------------------------
                 // CHECK IF IS OK
                 //------------------------------------------------------------------------------------------------
-
+                if (isAccountCreated.Success)
+                {
+                    return CreateBaseResponse(System.Net.HttpStatusCode.Created, new
+                    {
+                        IdAccount = isAccountCreated.IdAccount,
+                        Message = "Your new account has created. You will receive soon as possible a confirmation email type."
+                    });
+                }
+                else throw new Exception(isAccountCreated.ErroMessage);
 
             }
             catch (Exception ex)
             {
-                return BadRequest("ERR01-Error trying to create a new account into the Bank");
+                return CreateBaseResponse(System.Net.HttpStatusCode.InternalServerError, "ERR01-Error trying to create a new account into the Bank");
             }
         }
     }

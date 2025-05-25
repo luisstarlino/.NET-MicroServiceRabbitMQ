@@ -21,6 +21,11 @@ namespace MicroRabbit.Banking.Data.Context
                 .WithMany(c => c.Accounts)
                 .HasForeignKey(a => a.ClientId)
                 .OnDelete(DeleteBehavior.Cascade); // ou Restrict, se não quiser excluir em cascata
+
+            modelBuilder.Entity<Account>()
+            .Property(a => a.AccountType)
+            .HasConversion<int>(); // ← converte enum para int no banco
+
         }
 
 

@@ -11,6 +11,7 @@ namespace MicroRabbit.Banking.Domain.Models
         public int Id { get; set; }
         public AccountType AccountType { get; set; }
         public decimal AccountBalance { get; set; }
+        public bool Active { get; set; } = true;
 
         // Foreign Key Configuration
         public int ClientId { get; set; }

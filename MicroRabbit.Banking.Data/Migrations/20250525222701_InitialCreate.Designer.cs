@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MicroRabbit.Banking.Data.Migrations
 {
     [DbContext(typeof(BankingDbContext))]
-    [Migration("20250523214825_AddClientAccountRelation")]
-    partial class AddClientAccountRelation
+    [Migration("20250525222701_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,9 +36,11 @@ namespace MicroRabbit.Banking.Data.Migrations
                     b.Property<decimal>("AccountBalance")
                         .HasColumnType("numeric");
 
-                    b.Property<string>("AccountType")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("AccountType")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean");
 
                     b.Property<int>("ClientId")
                         .HasColumnType("integer");
