@@ -1,4 +1,5 @@
 ﻿using MicroRabbit.Banking.Application.Models;
+using MicroRabbit.Banking.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MicroRabbit.Banking.Api.Controllers
@@ -16,6 +17,14 @@ namespace MicroRabbit.Banking.Api.Controllers
                 // CHECK PARMS
                 //------------------------------------------------------------------------------------------------
                 if (!ModelState.IsValid) return BadRequest("Fill all the required parameters!");
+
+                // ------------------------------------------------------------------------------------------------
+                // CHECK IF THIS REQUEST HAS A ACCOUNT TYPE VALID
+                //------------------------------------------------------------------------------------------------
+                if(Enum.IsDefined(typeof(AccountType), acRequest.AccountType) == false)
+                {
+                    throw new Exception("Invalid Account type");
+                }
 
                 //------------------------------------------------------------------------------------------------
                 // CREATING ACCOUNT

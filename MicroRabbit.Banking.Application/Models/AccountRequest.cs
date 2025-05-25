@@ -9,7 +9,7 @@ namespace MicroRabbit.Banking.Application.Models
 {
     public class AccountRequest
     {
-        public string AccountType { get; set; }
+        public int AccountType { get; set; }
         public decimal AccountBalance { get; set; }
         public int ClientId { get; set; }
 

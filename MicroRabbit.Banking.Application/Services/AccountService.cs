@@ -32,7 +32,7 @@ namespace MicroRabbit.Banking.Application.Services
                 {
                     AccountBalance = acRequest.AccountBalance,
                     ClientId = acRequest.ClientId,
-                    AccountType = acRequest.AccountType
+                    AccountType = (AccountType)acRequest.AccountType
                 };
                 var newAcc = await _accountRepository.AddAccount(dbModel);
 
