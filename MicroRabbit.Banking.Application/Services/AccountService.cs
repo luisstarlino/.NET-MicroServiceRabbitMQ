@@ -23,6 +23,40 @@ namespace MicroRabbit.Banking.Application.Services
             _bus = bus;
         }
 
+        async public Task<AccountResponse> AddAccount(AccountRequest acRequest)
+        {
+            var response = new AccountResponse();
+            try
+            {
+                var dbModel = new Account
+                {
+                    AccountBalance = acRequest.AccountBalance,
+                    ClientId = acRequest.ClientId,
+                    AccountType = acRequest.AccountType
+                };
+                var newAcc = await _accountRepository.AddAccount(dbModel);
+
+                if (newAcc < 0) throw new Exception("-1");
+                
+                //--------------------------------------------------
+                // --- All ready done! Account created!
+                //--------------------------------------------------
+                response.IdAccount = newAcc;
+
+                //--------------------------------------------------
+                // --- Add event to send email (** To do **)
+                //--------------------------------------------------
+
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.ErroMessage = $"Erro interno. Entre em contato com o administrador | {ex.Message}";
+            }
+
+            return response;
+            
+        }
 
         public IEnumerable<Account> GetAccounts()
         {

@@ -19,6 +19,21 @@ namespace MicroRabbit.Banking.Data.Repository
             _ctx = ctx;
         }
 
+        async public Task<int> AddAccount(Account account)
+        {
+            try
+            {
+                await _ctx.Accounts.AddAsync(account);
+                await _ctx.SaveChangesAsync();
+
+                return account.Id;
+            } catch
+            {
+                return -1;
+            }
+            
+        }
+
         public IEnumerable<Account> GetAccounts()
         {
             return _ctx.Accounts;
