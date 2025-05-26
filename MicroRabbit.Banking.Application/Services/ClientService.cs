@@ -57,16 +57,9 @@ namespace MicroRabbit.Banking.Application.Services
                 //------------------------------------------------------------------------------------------------
                 // SEND EVENTS TO THE CURRENT QUEUE | Create a command & send
                 //------------------------------------------------------------------------------------------------
-                ClientApprovalCommand command = new ClientApprovalCommand()
-                {
-                    Id = idClientProcess,
-                    FirstName = c.FirstName,
-                    LastName = c.LastName,
-                    Mail = c.Mail,
-                    Phone = c.Phone
-                };
-
-                _bus.SendCommand(command);
+                var createClientApprovalCommand = new CreateClientApprovalCommand(idClientProcess, c.FirstName, c.LastName, c.Mail, c.Phone);
+                
+                _bus.SendCommand(createClientApprovalCommand);
 
                 return true;
             }
@@ -137,7 +130,7 @@ namespace MicroRabbit.Banking.Application.Services
             }
         }
 
-        public ClientRequest? CheckApprovalStatus(int clientId)
+        public ClientResponse? CheckApprovalStatus(int clientId)
         {
             try
             {
@@ -150,10 +143,10 @@ namespace MicroRabbit.Banking.Application.Services
                 //------------------------------------------------------------------------------------------------
                 // MAPPING STATAUS TO VIEW
                 //------------------------------------------------------------------------------------------------
-                var client = new ClientRequest()
+                var client = new ClientResponse()
                 {
                     IsActive = clientDB.IsActive,
-                    Mail = clientDB.Mail
+                    Mail =  clientDB.Mail
                 };
                 return client;
 

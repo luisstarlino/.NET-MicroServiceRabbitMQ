@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace MicroRabbit.Banking.Api.Controllers
 {
     [ApiController]
-    [Route("account")]
+    [Route("accounts")]
     public class AccountController : BaseController
     {
         private readonly IAccountService _accountService;
@@ -16,6 +16,24 @@ namespace MicroRabbit.Banking.Api.Controllers
         public AccountController(IAccountService accountService)
         {
             _accountService = accountService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ListAllAccounts()
+        {
+            try
+            {
+                //------------------------------------------------------------------------------------------------
+                // LIST ACCOUNT'S
+                //------------------------------------------------------------------------------------------------
+                var accounts = await _accountService.GetAccounts();
+                return CreateBaseResponse(System.Net.HttpStatusCode.OK, accounts);
+
+            }
+            catch (Exception ex)
+            {
+                return CreateBaseResponse(System.Net.HttpStatusCode.InternalServerError, "ERR01-Please, contact the administrator");
+            }
         }
 
         [HttpPost]
@@ -48,7 +66,7 @@ namespace MicroRabbit.Banking.Api.Controllers
                 {
                     return CreateBaseResponse(System.Net.HttpStatusCode.Created, new
                     {
-                        IdAccount = isAccountCreated.IdAccount,
+                        isAccountCreated.IdAccount,
                         Message = "Your new account has created. You will receive soon as possible a confirmation email type."
                     });
                 }

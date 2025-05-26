@@ -34,7 +34,7 @@ namespace MicroRabbit.Banking.Data.Repository
             
         }
 
-        public IEnumerable<Account> GetAccounts()
+        async public Task<IEnumerable<Account>> GetAccounts()
         {
             return _ctx.Accounts;
         }

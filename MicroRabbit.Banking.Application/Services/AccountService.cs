@@ -58,9 +58,9 @@ namespace MicroRabbit.Banking.Application.Services
             
         }
 
-        public IEnumerable<Account> GetAccounts()
+        async public Task<IEnumerable<Account>> GetAccounts()
         {
-            return _accountRepository.GetAccounts();
+            return await _accountRepository.GetAccounts();
         }
 
         public bool Transfer(AccountTransfer accountTransfer)

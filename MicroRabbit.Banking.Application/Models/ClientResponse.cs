@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace MicroRabbit.Banking.Application.Models
 {
-    
-    public class ClientRequest
+    public class ClientResponse
     {
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string FirstName { get; set; }
@@ -24,7 +23,8 @@ namespace MicroRabbit.Banking.Application.Models
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string Phone { get; set; }
-    }
 
-    
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public bool? IsActive { get; set; }
+    }
 }
