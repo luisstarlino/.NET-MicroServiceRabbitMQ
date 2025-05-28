@@ -12,7 +12,7 @@ namespace MicroRabbit.Banking.Application.Interfaces
     {
         Task<IEnumerable<Account>> GetAccounts();
         bool Transfer(AccountTransfer accountTransfer);
-
         Task<AccountResponse> AddAccount(AccountRequest acRequest);
+        Task<bool> UpdateStatusAccout(int accId, bool newStatus);
     }
 }

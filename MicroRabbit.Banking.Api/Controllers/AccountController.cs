@@ -3,6 +3,7 @@ using MicroRabbit.Banking.Application.Interfaces;
 using MicroRabbit.Banking.Application.Models;
 using MicroRabbit.Banking.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace MicroRabbit.Banking.Api.Controllers
@@ -18,6 +19,10 @@ namespace MicroRabbit.Banking.Api.Controllers
             _accountService = accountService;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> ListAllAccounts()
         {
@@ -36,6 +41,11 @@ namespace MicroRabbit.Banking.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="acRequest"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> AddAccount([FromBody] AccountRequest acRequest)
         {
@@ -78,5 +88,41 @@ namespace MicroRabbit.Banking.Api.Controllers
                 return CreateBaseResponse(System.Net.HttpStatusCode.InternalServerError, "ERR01-Error trying to create a new account into the Bank");
             }
         }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="acRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("{id}/update")]
+        public async Task<IActionResult> UpdateAccountStatus([FromBody] AccountStatusRequest body, int id)
+        {
+            try
+            {
+                // ------------------------------------------------------------------------------------------------
+                // CHECK PARMS
+                //------------------------------------------------------------------------------------------------
+                if (!ModelState.IsValid) return BadRequest("Fill all the required parameters!");
+
+                //------------------------------------------------------------------------------------------------
+                // UPDATE ACCOUNT
+                //------------------------------------------------------------------------------------------------
+                var isAccountCreated = await _accountService.UpdateStatusAccout(id, body.NewStatus);
+
+                if (isAccountCreated is true) return CreateBaseResponse(HttpStatusCode.OK, "Your account has successfully updated!");
+                else return CreateBaseResponse(HttpStatusCode.BadRequest, "ERR02 - Try again later");
+
+
+            }
+            catch (Exception ex)
+            {
+                return CreateBaseResponse(System.Net.HttpStatusCode.InternalServerError, "ERR01-Error trying to update a status.Please, contact the IT");
+
+            }
+        }
+
+
     }
 }

@@ -14,4 +14,10 @@ namespace MicroRabbit.Banking.Application.Models
         public int ClientId { get; set; }
 
     }
+
+    public class AccountStatusRequest
+    {
+        public bool NewStatus { get; set; }
+
+    }
 }

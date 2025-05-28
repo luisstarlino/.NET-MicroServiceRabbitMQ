@@ -73,5 +73,14 @@ namespace MicroRabbit.Banking.Application.Services
 
             return true;
         }
+
+        async public Task<bool> UpdateStatusAccout(int accId, bool newStatus)
+        {
+            //--------------------------------------------------
+            // --- UPDATE STATUS
+            //--------------------------------------------------
+            var updateSuccess = await _accountRepository.ChangeAccountStatus(accId, newStatus);
+            return updateSuccess;
+        }
     }
 }

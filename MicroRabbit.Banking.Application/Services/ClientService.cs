@@ -65,8 +65,6 @@ namespace MicroRabbit.Banking.Application.Services
             }
         }
 
-        
-
         public IEnumerable<ClientRequest> GetClients()
         {
             try

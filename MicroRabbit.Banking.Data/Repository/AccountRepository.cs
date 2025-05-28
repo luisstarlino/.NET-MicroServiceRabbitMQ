@@ -34,6 +34,25 @@ namespace MicroRabbit.Banking.Data.Repository
             
         }
 
+        async public Task<bool> ChangeAccountStatus(int idAcc, bool newStatus)
+        {
+            try
+            {
+                var foundAcc = await _ctx.Accounts.FindAsync(idAcc);
+                if (foundAcc is null) return false;
+
+                // --- Update if has found!
+                foundAcc.Active = newStatus;
+                await _ctx.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+            
+        }
+
         async public Task<IEnumerable<Account>> GetAccounts()
         {
             return _ctx.Accounts;
