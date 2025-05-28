@@ -1,12 +1,12 @@
-﻿using System;
+﻿using MicroRabbit.Analytics.Domain.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MicroRabbit.Banking.Domain.Models;
-using Microsoft.EntityFrameworkCore;
 
-namespace MicroRabbit.Banking.Data.Context
+namespace MicroRabbit.Analytics.Data.Context
 {
     public class BankingDbContext : DbContext
     {
@@ -27,7 +27,6 @@ namespace MicroRabbit.Banking.Data.Context
             .HasConversion<int>(); // ← converte enum para int no banco
 
         }
-
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Client> Clients { get; set; }

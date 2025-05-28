@@ -10,7 +10,7 @@ namespace MicroRabbit.Analytics.Data.Context
 {
     public class AnalyticsDbContext : DbContext
     {
-        public AnalyticsDbContext(DbContextOptions options) : base(options)
+        public AnalyticsDbContext(DbContextOptions<AnalyticsDbContext> options) : base(options)
         {
 
         }
