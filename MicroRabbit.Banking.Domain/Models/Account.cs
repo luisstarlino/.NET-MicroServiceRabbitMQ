@@ -9,7 +9,13 @@ namespace MicroRabbit.Banking.Domain.Models
     public class Account
     {
         public int Id { get; set; }
-        public string AccountType { get; set; }
+        public AccountType AccountType { get; set; }
         public decimal AccountBalance { get; set; }
+        public bool Active { get; set; } = true;
+
+        // Foreign Key Configuration
+        public int ClientId { get; set; }
+        public Client Client { get; set; } // EF Navigation to this model
+
     }
 }

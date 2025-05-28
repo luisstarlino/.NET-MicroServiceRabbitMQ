@@ -9,6 +9,8 @@ namespace MicroRabbit.Banking.Domain.Interfaces
 {
     public interface IAccountRepository
     {
-        IEnumerable<Account> GetAccounts();
+        Task<IEnumerable<Account>> GetAccounts();
+        Task<int> AddAccount(Account account);
+        Task<bool> ChangeAccountStatus(int idAcc, bool newStatus);
     }
 }
