@@ -24,6 +24,8 @@ namespace MicroRabbit.Analytics.Api
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddDbContext<AnalyticsDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("AnalyticsDbConnection")));
+            services.AddDbContext<BankingDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("BankingDbConnection")));
+
 
 
             services.AddSwaggerGen(c =>

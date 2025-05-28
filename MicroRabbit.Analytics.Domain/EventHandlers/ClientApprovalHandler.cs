@@ -14,15 +14,17 @@ namespace MicroRabbit.Analytics.Domain.EventHandlers
     public class ClientApprovalHandler : IEventHandler<ClientApprovalEvent>
     {
         private readonly IAnalyticsRepository _analyticsRepository;
+        private readonly IBankingRepository _bankingRepository;
         private const string DEFAULT_PROCESS_OPERATOR = "RABBIT_BOT";
         private const string DEFAULT_COMPLEMENT = "Please, send an email to approval@baking.com with the request corrections and we will review your registration";
 
-        public ClientApprovalHandler(IAnalyticsRepository analyticsRepository)
+        public ClientApprovalHandler(IAnalyticsRepository analyticsRepository, IBankingRepository bankingRepository)
         {
             _analyticsRepository = analyticsRepository;
+            _bankingRepository = bankingRepository;
         }
 
-        public Task Handle(ClientApprovalEvent @event)
+        async public Task Handle(ClientApprovalEvent @event)
         {
             //------------------------------------------------------------------------------------------------
             // CONST
@@ -45,6 +47,10 @@ namespace MicroRabbit.Analytics.Domain.EventHandlers
                 else
                 {
                     isValid = true;
+
+                    // --- UPDATE TO TRUE IN MAIN DB
+                    await _bankingRepository.UpdateClientStatus(@event.Id, true);
+
                 }
                 
 
@@ -70,7 +76,7 @@ namespace MicroRabbit.Analytics.Domain.EventHandlers
                 Reason = reason
             });
 
-            return Task.CompletedTask;
+            return;
         }
     }
 }
