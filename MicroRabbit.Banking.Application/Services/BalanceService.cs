@@ -13,10 +13,12 @@ namespace MicroRabbit.Banking.Application.Services
     public class BalanceService : IBalanceService
     {
         private readonly IBalanceRepository _balanceRepository;
+        private readonly IAccountRepository _accountRepository;
 
-        public BalanceService(IBalanceRepository balanceRepository)
+        public BalanceService(IBalanceRepository balanceRepository, IAccountRepository accountRepository)
         {
             _balanceRepository = balanceRepository;
+            _accountRepository = accountRepository;
         }
         public async Task<Guid> AddBalance(BalanceRequest balance, int accountId)
         {
@@ -25,7 +27,8 @@ namespace MicroRabbit.Banking.Application.Services
                 // ------------------------------------------------------------------------------------------------
                 // 1. Updating the account according the incoming balance
                 //------------------------------------------------------------------------------------------------
-
+                var newBalanceOperator = await _accountRepository.UpdateAmountAcc(accountId, balance.Amount);
+                if (newBalanceOperator is null) return Guid.Empty;
 
                 // ------------------------------------------------------------------------------------------------
                 // 2. Add a balance history
@@ -36,6 +39,10 @@ namespace MicroRabbit.Banking.Application.Services
                     Amount = balance.Amount,
                     Description = balance.Description
                 };
+
+                var saveBalanceHistory = await _balanceRepository.AddBalance(dbModel);
+                return saveBalanceHistory;
+
 
             }
             catch (Exception ex)

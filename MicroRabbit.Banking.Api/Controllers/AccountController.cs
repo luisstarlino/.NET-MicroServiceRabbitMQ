@@ -14,10 +14,12 @@ namespace MicroRabbit.Banking.Api.Controllers
     public class AccountController : BaseController
     {
         private readonly IAccountService _accountService;
+        private readonly IBalanceService _balanceService;
 
-        public AccountController(IAccountService accountService)
+        public AccountController(IAccountService accountService, IBalanceService balanceService)
         {
             _accountService = accountService;
+            _balanceService = balanceService;
         }
 
         /// <summary>
@@ -143,6 +145,17 @@ namespace MicroRabbit.Banking.Api.Controllers
                 //------------------------------------------------------------------------------------------------
                 // ADD A NEW BALANCE
                 //------------------------------------------------------------------------------------------------
+                var balanceService = await _balanceService.AddBalance(balanceReq, id);
+
+                if (balanceService.Equals(Guid.Empty)) return CreateBaseResponse(HttpStatusCode.BadRequest, "ERR02-Error trying to add a new Balance.");
+                else
+                {
+                    return CreateBaseResponse(HttpStatusCode.Created, new
+                    {
+                        BalanceHistory = balanceService,
+                        Message = "Balance successfully insert!"
+                    });
+                }
 
             }
             catch (Exception ex)
