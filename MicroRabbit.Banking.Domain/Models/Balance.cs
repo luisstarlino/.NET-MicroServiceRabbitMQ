@@ -12,7 +12,7 @@ namespace MicroRabbit.Banking.Domain.Models
         [Key]
         public Guid Id { get; set; } = new Guid();
         public decimal Amount { get; set; }
-        public decimal Description { get; set; }
+        public string Description { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         // Foreign Key Configuration

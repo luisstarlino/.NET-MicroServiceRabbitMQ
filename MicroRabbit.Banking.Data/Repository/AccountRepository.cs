@@ -67,7 +67,7 @@ namespace MicroRabbit.Banking.Data.Repository
                 else
                 {
                     // --- New balance
-                    foundAcc.AccountBalance = +(incomeBalace);
+                    foundAcc.AccountBalance = foundAcc.AccountBalance + (incomeBalace);
                     await _ctx.SaveChangesAsync();
 
                     return foundAcc.AccountBalance;
