@@ -57,5 +57,26 @@ namespace MicroRabbit.Banking.Data.Repository
         {
             return _ctx.Accounts;
         }
+
+        async public Task<decimal?> UpdateAmountAcc(int idAcc, decimal incomeBalace)
+        {
+            try
+            {
+                var foundAcc = await _ctx.Accounts.FindAsync(idAcc);
+                if (foundAcc is null) return null;
+                else
+                {
+                    // --- New balance
+                    foundAcc.AccountBalance = foundAcc.AccountBalance + (incomeBalace);
+                    await _ctx.SaveChangesAsync();
+
+                    return foundAcc.AccountBalance;
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }

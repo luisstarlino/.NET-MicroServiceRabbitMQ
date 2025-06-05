@@ -17,5 +17,8 @@ namespace MicroRabbit.Banking.Domain.Models
         public int ClientId { get; set; }
         public Client Client { get; set; } // EF Navigation to this model
 
+        // --- Foreing key configuration
+        public ICollection<Balance> Balances { get; set; } // Reverse Navigation (1:N) A account, using many balances
+
     }
 }

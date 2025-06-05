@@ -12,5 +12,6 @@ namespace MicroRabbit.Banking.Domain.Interfaces
         Task<IEnumerable<Account>> GetAccounts();
         Task<int> AddAccount(Account account);
         Task<bool> ChangeAccountStatus(int idAcc, bool newStatus);
+        Task<decimal?> UpdateAmountAcc(int idAcc, decimal incomeBalace);
     }
 }

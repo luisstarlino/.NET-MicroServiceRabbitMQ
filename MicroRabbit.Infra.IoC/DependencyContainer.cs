@@ -75,6 +75,7 @@ namespace MicroRabbit.Infra.IoC
             // --- (Banking)
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IClientService, ClientService>();
+            services.AddTransient<IBalanceService, BalanceService>();
 
             // --- (Transfer)
             services.AddTransient<ITransferService, TransferService>();
@@ -87,6 +88,7 @@ namespace MicroRabbit.Infra.IoC
             // --- (Banking)
             services.AddTransient<IAccountRepository, AccountRepository>();
             services.AddTransient<IClientRepository, ClientRepository>();
+            services.AddTransient<IBalanceRepository, BalanceRepository>();
             services.AddDbContext<Banking.Data.Context.BankingDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("BankingDbConnection")));
 
             // --- (Transfer)
