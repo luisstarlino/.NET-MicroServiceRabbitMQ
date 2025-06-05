@@ -51,5 +51,11 @@ namespace MicroRabbit.Banking.Application.Services
             }
             
         }
+
+        public async Task<IEnumerable<Balance?>> ListAllBalancesByAcc(int accountId)
+        {
+            var repositoryLayer = await _balanceRepository.GetAllBalancesByAccount(accountId);
+            return repositoryLayer;
+        }
     }
 }

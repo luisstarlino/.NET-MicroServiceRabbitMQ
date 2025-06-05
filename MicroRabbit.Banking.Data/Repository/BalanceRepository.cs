@@ -1,6 +1,7 @@
 ﻿using MicroRabbit.Banking.Data.Context;
 using MicroRabbit.Banking.Domain.Interfaces;
 using MicroRabbit.Banking.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,8 +40,10 @@ namespace MicroRabbit.Banking.Data.Repository
 
         public async Task<IEnumerable<Balance>> GetAllBalancesByAccount(int AccountId)
         {
-            var byAccount = _ctx.Balances.Select((b)=> b.AccountId.Equals(AccountId));
-            return (IEnumerable<Balance>)byAccount;
+            var byAccount = await _ctx.Balances
+                                         .Where(b => b.AccountId == AccountId)
+                                         .ToListAsync(); // Garante que será executado no banco e retorna listavar byAccount = await _ctx.Balances.Where(b => b.AccountId.Equals(AccountId)).ToListAsync();
+            return byAccount;
         }
 
         public async Task<Balance?> GetUniqueBalance(Guid guidBalance)

@@ -164,6 +164,26 @@ namespace MicroRabbit.Banking.Api.Controllers
             }
         }
 
+        
+        [HttpGet]
+        [Route("{id}/balance")]
+        public async Task<IActionResult> ListBalanceByAccount(int id)
+        {
+            try
+            {
+                //------------------------------------------------------------------------------------------------
+                // CREATING ACCOUNT
+                //------------------------------------------------------------------------------------------------
+                var balances = await _balanceService.ListAllBalancesByAcc(id);
+                return CreateBaseResponse(HttpStatusCode.OK, balances);
+            }
+            catch (Exception ex)
+            {
+                return CreateBaseResponse(HttpStatusCode.InternalServerError, "ERR01-Error trying to list all balances by account. Please, try again later");
+
+            }
+        }
+
 
     }
 }
