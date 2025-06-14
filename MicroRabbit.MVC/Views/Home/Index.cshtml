@@ -2,7 +2,7 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
+@* <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
@@ -18,4 +18,41 @@
     <input type="text" id="TransferAmount" name="TransferAmount" required>
 
     <input type="submit" name="Transfer" />
-</form>
+</form> *@
+
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4>Transferência Bancária</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="/Home/Transfer">
+                        <!-- ajuste a rota conforme seu controller -->
+                        <div class="mb-3">
+                            <label for="fromAccount" class="form-label">Conta de origem</label>
+                            <input type="text" class="form-control" id="fromAccount" name="FromAccount" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="toAccount" class="form-label">Conta de destino</label>
+                            <input type="text" class="form-control" id="toAccount" name="ToAccount" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">Valor</label>
+                            <input type="number" class="form-control" id="amount" name="Amount" min="0.01" step="0.01" required>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success">Enviar Transferência</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <footer class="text-center mt-4 text-muted">
+                © 2025 - MicroRabbit.MVC - <a href="#" class="text-decoration-none">Privacidade</a>
+            </footer>
+        </div>
+    </div>
+</div>
