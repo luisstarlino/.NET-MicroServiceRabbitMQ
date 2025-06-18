@@ -12,5 +12,6 @@ namespace MicroRabbit.Banking.Domain.Interfaces
         IEnumerable<Client> GetAllClients();
         Client? GetById(int clientId);
         int Add(Client client);
+        Task AddCreatedLog();
     }
 }
