@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MicroRabbit.Banking.Data.Context;
 using MicroRabbit.Banking.Domain.Interfaces;
 using MicroRabbit.Banking.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 
 namespace MicroRabbit.Banking.Data.Repository
@@ -32,6 +33,40 @@ namespace MicroRabbit.Banking.Data.Repository
                 return -1;
             }
             
+        }
+
+        async public Task AddAccountCreatedLog()
+        {
+            var today = DateTime.UtcNow.Date;
+            var origin = "SYSTEM";
+
+            try
+            {
+                var countsToday = await _ctx.AccountCreationLogs.FirstOrDefaultAsync(record => record.Date == today && record.CreatedBy == origin);
+
+                if (countsToday != null)
+                {
+                    countsToday.Count += 1;
+                    _ctx.AccountCreationLogs.Update(countsToday);
+                }
+                else
+                {
+                    await _ctx.AccountCreationLogs.AddAsync(new AccountCreationLog
+                    {
+                        Count = 1,
+                        CreatedBy = origin,
+                        Date = today
+                    });
+                }
+
+                await _ctx.SaveChangesAsync();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("*******ERROR*******");
+                Console.WriteLine(ex);
+            }
         }
 
         async public Task<bool> ChangeAccountStatus(int idAcc, bool newStatus)

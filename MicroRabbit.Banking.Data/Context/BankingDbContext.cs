@@ -33,6 +33,7 @@ namespace MicroRabbit.Banking.Data.Context
         public DbSet<Client> Clients { get; set; }
         public DbSet<Balance> Balances { get; set; }
         public DbSet<ClientCreationLog> ClientCreationLogs { get; set; }
+        public DbSet<AccountCreationLog> AccountCreationLogs { get; set; }
 
     }
 }

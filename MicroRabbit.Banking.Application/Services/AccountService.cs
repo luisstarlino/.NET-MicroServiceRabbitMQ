@@ -44,6 +44,12 @@ namespace MicroRabbit.Banking.Application.Services
                 response.IdAccount = newAcc;
 
                 //--------------------------------------------------
+                // --- Count Create Log event
+                //--------------------------------------------------
+                await _accountRepository.AddAccountCreatedLog();
+
+
+                //--------------------------------------------------
                 // --- Add event to send email (** To do **)
                 //--------------------------------------------------
 
