@@ -12,5 +12,7 @@ namespace MicroRabbit.Analytics.Domain.Interfaces
         IEnumerable<ClientApproval> GetAllClientApprovalProcess();
         bool AddClientApproval(ClientApproval approvalProcess);
         ClientApproval? GetUniqueByClient(int idClient);
+        Task AddAprrovalClientLog();
+        Task AddAnalyticsClientLog();
     }
 }
