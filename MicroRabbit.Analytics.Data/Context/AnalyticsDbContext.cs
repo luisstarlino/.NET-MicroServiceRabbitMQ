@@ -1,4 +1,5 @@
-﻿using MicroRabbit.Analytics.Domain.Models;
+﻿using MicroRabbit.Analytics.Domain.Events;
+using MicroRabbit.Analytics.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,5 +16,7 @@ namespace MicroRabbit.Analytics.Data.Context
 
         }
         public DbSet<ClientApproval> ClientApprovals { get; set; }
+        public DbSet<ClientAnalyticsLog> ClientAnalyticsLogs { get; set; }
+        public DbSet<ClientApprovalLog> ClientApprovalLogs { get; set; }
     }
 }
