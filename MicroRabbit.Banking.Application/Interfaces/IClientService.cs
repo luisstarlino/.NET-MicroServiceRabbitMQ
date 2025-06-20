@@ -10,7 +10,7 @@ namespace MicroRabbit.Banking.Application.Interfaces
 {
     public interface IClientService
     {
-        bool AddClient(ClientRequest client);
+        Task<bool> AddClient(ClientRequest client);
         IEnumerable<ClientRequest> GetClients();
         ClientRequest? GetUniqueClient(int clientId);
         ClientResponse? CheckApprovalStatus(int clientId);

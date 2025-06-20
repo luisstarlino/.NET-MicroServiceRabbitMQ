@@ -23,7 +23,7 @@ namespace MicroRabbit.Banking.Api.Controllers
         /// <param name="clientReq"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult AddClient([FromBody] ClientRequest clientReq)
+        async public Task<IActionResult> AddClient([FromBody] ClientRequest clientReq)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace MicroRabbit.Banking.Api.Controllers
                 //------------------------------------------------------------------------------------------------
                 // TRY TO ADD
                 //------------------------------------------------------------------------------------------------
-                var isAccepted = _clientService.AddClient(clientReq);
+                var isAccepted = await _clientService.AddClient(clientReq);
 
                 //------------------------------------------------------------------------------------------------
                 // CHECK IF IS OK

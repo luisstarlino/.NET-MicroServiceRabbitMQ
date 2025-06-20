@@ -24,7 +24,7 @@ namespace MicroRabbit.Banking.Application.Services
             _bus = bus;
         }
 
-        public bool AddClient(ClientRequest c)
+        async public Task<bool> AddClient(ClientRequest c)
         {
             //------------------------------------------------------------------------------------------------
             // TODO: CHECK EMAIL 
@@ -59,7 +59,12 @@ namespace MicroRabbit.Banking.Application.Services
                 //------------------------------------------------------------------------------------------------
                 var createClientApprovalCommand = new CreateClientApprovalCommand(idClientProcess, c.FirstName, c.LastName, c.Mail, c.Phone);
                 
-                _bus.SendCommand(createClientApprovalCommand);
+                await _bus.SendCommand(createClientApprovalCommand);
+
+                //------------------------------------------------------------------------------------------------
+                // SAVE CREATED LOG CLIENT EVENT
+                //------------------------------------------------------------------------------------------------
+                await _clientRepository.AddCreatedLog();
 
                 return true;
             }
