@@ -100,8 +100,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <a href="#">
-                <IconBrandStripe className="!size-5" />
-                <span className="text-base font-semibold">Star Banking Inc.</span>
+                <IconBrandStripe className="!size-5" color="#C41E3D" />
+                <span className="text-base font-semibold" style={{color: '#C41E3D'}}>Star Banking Inc.</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>

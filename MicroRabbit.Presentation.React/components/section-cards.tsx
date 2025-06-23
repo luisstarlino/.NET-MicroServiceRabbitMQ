@@ -30,7 +30,7 @@ export function SectionCards() {
           <div className="line-clamp-1 flex gap-2 font-medium">
             Trending up this month <IconTrendingUp className="size-4" />
           </div>
-          <div className="text-muted-foreground">
+          <div className="text-muted">
             Visitors for the last 6 months
           </div>
         </CardFooter>
@@ -52,7 +52,7 @@ export function SectionCards() {
           <div className="line-clamp-1 flex gap-2 font-medium">
             Down 20% this period <IconTrendingDown className="size-4" />
           </div>
-          <div className="text-muted-foreground">
+          <div className="text-muted">
             Acquisition needs attention
           </div>
         </CardFooter>
@@ -74,7 +74,7 @@ export function SectionCards() {
           <div className="line-clamp-1 flex gap-2 font-medium">
             Strong user retention <IconTrendingUp className="size-4" />
           </div>
-          <div className="text-muted-foreground">Engagement exceed targets</div>
+          <div className="text-muted">Engagement exceed targets</div>
         </CardFooter>
       </Card>
       <Card className="@container/card">
@@ -94,7 +94,7 @@ export function SectionCards() {
           <div className="line-clamp-1 flex gap-2 font-medium">
             Steady performance increase <IconTrendingUp className="size-4" />
           </div>
-          <div className="text-muted-foreground">Meets growth projections</div>
+          <div className="text-muted">Meets growth projections</div>
         </CardFooter>
       </Card>
     </div>
