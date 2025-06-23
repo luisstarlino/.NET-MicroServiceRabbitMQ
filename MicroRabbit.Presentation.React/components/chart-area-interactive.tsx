@@ -136,7 +136,7 @@ const chartConfig = {
   },
   mobile: {
     label: "Mobile",
-    color: "var(--primary)",
+    color: "var(--background)",
   },
 } satisfies ChartConfig
 
@@ -247,14 +247,23 @@ export function ChartAreaInteractive() {
               axisLine={false}
               tickMargin={8}
               minTickGap={32}
+              stroke="white"
+              tick={{
+                fill: "#ffffff", // Cor do texto dos ticks
+                fontSize: 12,     // Ajuste se quiser
+                fontWeight: 'normal', // Pode mudar pra 'bold' se preferir
+              }}
+
+
               tickFormatter={(value) => {
-                const date = new Date(value)
+                const date = new Date(value);
                 return date.toLocaleDateString("en-US", {
                   month: "short",
                   day: "numeric",
-                })
+                });
               }}
             />
+
             <ChartTooltip
               cursor={false}
               defaultIndex={isMobile ? -1 : 10}

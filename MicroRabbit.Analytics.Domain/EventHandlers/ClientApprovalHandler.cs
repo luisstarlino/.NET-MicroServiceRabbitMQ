@@ -37,6 +37,11 @@ namespace MicroRabbit.Analytics.Domain.EventHandlers
             try
             {
                 //------------------------------------------------------------------------------------------------
+                // RN1: Add log analytics
+                //------------------------------------------------------------------------------------------------
+                await _analyticsRepository.AddAnalyticsClientLog();
+
+                //------------------------------------------------------------------------------------------------
                 // Check roles
                 //------------------------------------------------------------------------------------------------
                 var validationResult = validator.Validate(@event);
@@ -50,6 +55,11 @@ namespace MicroRabbit.Analytics.Domain.EventHandlers
 
                     // --- UPDATE TO TRUE IN MAIN DB
                     await _bankingRepository.UpdateClientStatus(@event.Id, true);
+
+                    //------------------------------------------------------------------------------------------------
+                    // RN2: Add approval log 
+                    //------------------------------------------------------------------------------------------------
+                    await _analyticsRepository.AddAprrovalClientLog();
 
                 }
                 
