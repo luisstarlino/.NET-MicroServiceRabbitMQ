@@ -78,5 +78,38 @@ namespace MicroRabbit.Banking.Data.Repository
         {
             return _ctx.Clients.Find(clientId);
         }
+
+        async public Task<int> GetCountByInterval(DateTime startRange, DateTime endRange)
+        {
+            try
+            {
+                var totalCount = await _ctx.ClientCreationLogs
+                .Where(log => log.Date >= startRange && log.Date <= endRange)
+                .SumAsync(log => log.Count);
+
+                return totalCount;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("**** ERRO ****");
+                Console.WriteLine(ex.ToString().Substring(0, 100));
+                return -1;
+            }
+        }
+
+        async public Task<List<ClientCreationLog>> GetFullDashboardClientCreation()
+        {
+            var infos = new List<ClientCreationLog>();
+            try
+            {
+                infos = await _ctx.ClientCreationLogs.ToListAsync();
+            } catch (Exception ex)
+            {
+                Console.WriteLine("**** ERRO ****");
+                Console.WriteLine(ex.ToString().Substring(0, 100));
+            }
+            return infos;
+            
+        }
     }
 }

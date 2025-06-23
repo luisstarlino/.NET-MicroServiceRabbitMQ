@@ -13,5 +13,7 @@ namespace MicroRabbit.Banking.Domain.Interfaces
         Client? GetById(int clientId);
         int Add(Client client);
         Task AddCreatedLog();
+        Task<List<ClientCreationLog>> GetFullDashboardClientCreation();
+        Task<int> GetCountByInterval(DateTime startRange, DateTime endRange);
     }
 }
