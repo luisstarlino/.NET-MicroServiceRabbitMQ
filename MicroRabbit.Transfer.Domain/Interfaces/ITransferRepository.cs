@@ -6,5 +6,6 @@ namespace MicroRabbit.Transfer.Domain.Interfaces
     {
         IEnumerable<TransferLog> GetTransferLogs();
         bool Add(TransferLog transferLog);
+        Task AddTransferCreatedLog();
     }
 }

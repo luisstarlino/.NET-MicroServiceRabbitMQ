@@ -17,7 +17,7 @@ namespace MicroRabbit.Transfer.Domain.EventHandlers
         {
             _transferRepository = transferRepository;
         }
-        public Task Handle(TransferCreatedEvent @event)
+        async public Task Handle(TransferCreatedEvent @event)
         {
 
             bool saveLog = _transferRepository.Add(new TransferLog
@@ -27,8 +27,9 @@ namespace MicroRabbit.Transfer.Domain.EventHandlers
                 TransferAmount = @event.Amount
             });
 
+            await _transferRepository.AddTransferCreatedLog();
+
             // --- HERE, we gonna receive the event and do something with it ---
-            return Task.CompletedTask;
         }
     }
 }
