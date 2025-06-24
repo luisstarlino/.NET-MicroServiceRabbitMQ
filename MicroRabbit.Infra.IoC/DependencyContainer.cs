@@ -76,6 +76,7 @@ namespace MicroRabbit.Infra.IoC
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IClientService, ClientService>();
             services.AddTransient<IBalanceService, BalanceService>();
+            services.AddTransient<IDashboardService, DashboardService>();
 
             // --- (Transfer)
             services.AddTransient<ITransferService, TransferService>();

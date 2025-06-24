@@ -83,6 +83,10 @@ namespace MicroRabbit.Banking.Data.Repository
         {
             try
             {
+
+                startRange = DateTime.SpecifyKind(startRange, DateTimeKind.Utc);
+                endRange = DateTime.SpecifyKind(endRange, DateTimeKind.Utc);
+
                 var totalCount = await _ctx.ClientCreationLogs
                 .Where(log => log.Date >= startRange && log.Date <= endRange)
                 .SumAsync(log => log.Count);
